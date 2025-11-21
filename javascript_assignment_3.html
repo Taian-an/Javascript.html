@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Filter Names Dynamically</title>
+</head>
+<body>
+    <h2>Filter Names by First Letter</h2>
+    <label for="letterInput">Enter a letter: </label>
+    <input type="text" id="letterInput" maxlength="1">
+    <button id="filterBtn">Filter</button>
+
+    <ul id="nameList"></ul>
+
+    <script>
+        const people = [ 
+            "Alice Anderson", "Aaron Adams", "Bella Brown", "Brian Black", 
+            "Cathy Carter", "Charles Cooper", "Diana Davis", "Daniel Drake", 
+            "Ella Evans", "Ethan Edwards", "Fiona Fisher", "Frank Foster", 
+            "Grace Green", "Gavin Gray", "Hannah Harris", "Henry Hill", 
+            "Isabella Ingram", "Ian Irving", "Jack Johnson", "Julia James" 
+        ];
+
+        const input = document.getElementById("letterInput");
+        const button = document.getElementById("filterBtn");
+        const list = document.getElementById("nameList");
+
+        button.addEventListener("click", () => {
+            const chosenLetter = input.value.toUpperCase(); // 轉成大寫
+            const result = people.filter(name => name.charAt(0).toUpperCase() === chosenLetter);
+
+            // 清空舊列表
+            list.innerHTML = "";
+
+            // 顯示新列表
+            if (result.length === 0) {
+                const li = document.createElement("li");
+                li.textContent = "No names found.";
+                list.appendChild(li);
+            } else {
+                result.forEach(name => {
+                    const li = document.createElement("li");
+                    li.textContent = name;
+                    list.appendChild(li);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
