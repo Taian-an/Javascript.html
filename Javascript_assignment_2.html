@@ -1,0 +1,31 @@
+<html>
+  <body>
+    <h3>Today Fruits</h3>
+    <ul id="fruit-list"></ul>
+    <hr/>
+    <h3>Today Vegetables</h3>
+    <ul id="veg-list"></ul>
+    <script>
+      // 1. Create the Arrays
+      const fruits = ["Apple", "Banana", "Orange", "Mango", "Strawberry"];
+      const vegetables = ["Carrot", "Broccoli", "Spinach", "Tomato", "Cucumber"];
+
+      // 2. Get the HTML elements
+      const fruitList = document.getElementById("fruit-list");
+      const vegList = document.getElementById("veg-list");
+
+      // 3. Function to append items to a specific list
+      function appendItems(items, listElement) {
+        items.forEach(item => {
+          const li = document.createElement("li"); // Create list item
+          li.textContent = item;                   // Set text
+          listElement.appendChild(li);             // Add to ul
+        });
+      }
+
+      // 4. Run the function for both categories
+      appendItems(fruits, fruitList);
+      appendItems(vegetables, vegList);
+    </script>
+  </body>
+</html>
