@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta charset="utf-8" />
+   <meta name="viewport" content="width=device-width,initial-scale=1" />
+   <title>Monster Detail</title>
+   <style>
+     /* 簡單美化，可自行調整 */
+     body{
+       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial;
+       max-width:900px;
+       margin:30px auto;
+       padding:18px;
+       background:#f6f8fb;
+       color:#111;
+     }
+     h3{ margin:0 0 8px 0; }
+     #monster-list{
+       padding:8px 10px;
+       border-radius:6px;
+       border:1px solid #d1d5db;
+       min-width:220px;
+     }
+     table{
+       margin-top:14px;
+       border-collapse:collapse;
+       width:100%;
+       background:#fff;
+       border-radius:8px;
+       overflow:hidden;
+       box-shadow:0 6px 18px rgba(2,6,23,0.06);
+     }
+     th, td{
+       text-align:left;
+       padding:10px 12px;
+     }
+     th{
+       width:120px;
+       background:#f3f4f6;
+       font-weight:700;
+     }
+     td{
+       background:#fff;
+       color:#111827;
+     }
+     hr{ margin:14px 0; border:0; border-top:1px solid #e6eef8; }
+     .muted{ color:#6b7280; font-size:13px; margin-top:8px; }
+   </style>
+ </head>
+ <body>
+   <!-- 你可以修改 HTML 以套用 change event 或增加元素 -->
+   <h3>Monster Detail</h3>
+   <div>Select Monster:</div>
+   <div>
+     <select id="monster-list"></select>
+   </div>
+   <div class="muted">第一個值為 "-"（預設）。選擇怪物會將資料填入下方表格；選回 "-" 則會清空。</div>
+   <hr/>
+   <div>
+     <table>
+       <tr>
+         <th>ID</th>
+         <td id="td-monster-id"></td>
+       </tr>
+       <tr>
+         <th>Name</th>
+         <td id="td-monster-name"></td>
+       </tr>
+       <tr>
+         <th>HP</th>
+         <td id="td-monster-hp"></td>
+       </tr>
+       <tr>
+         <th>EXP</th>
+         <td id="td-monster-exp"></td>
+       </tr>
+     </table>
+   </div>
+
+   <script>
+     // Monster list as array of JSON objects
+     const monsters = [
+       {
+         "id": 1,
+         "name": "Fire Dragon",
+         "hp": 150,
+         "exp": 85
+       },
+       {
+         "id": 2,
+         "name": "Ice Wolf",
+         "hp": 75,
+         "exp": 45
+       },
+       {
+         "id": 3,
+         "name": "Shadow Goblin",
+         "hp": 40,
+         "exp": 25
+       },
+       {
+         "id": 4,
+         "name": "Lightning Phoenix",
+         "hp": 200,
+         "exp": 120
+       },
+       {
+         "id": 5,
+         "name": "Earth Golem",
+         "hp": 180,
+         "exp": 95
+       },
+       {
+         "id": 6,
+         "name": "Poison Spider",
+         "hp": 60,
+         "exp": 35
+       },
+       {
+         "id": 7,
+         "name": "Wind Eagle",
+         "hp": 90,
+         "exp": 55
+       },
+       {
+         "id": 8,
+         "name": "Dark Skeleton",
+         "hp": 65,
+         "exp": 40
+       },
+       {
+         "id": 9,
+         "name": "Crystal Unicorn",
+         "hp": 120,
+         "exp": 75
+       },
+       {
+         "id": 10,
+         "name": "Lava Titan",
+         "hp": 250,
+         "exp": 150
+       }
+     ];
+
+     // DOM refs
+     const selectEl = document.getElementById('monster-list');
+     const tdId = document.getElementById('td-monster-id');
+     const tdName = document.getElementById('td-monster-name');
+     const tdHp = document.getElementById('td-monster-hp');
+     const tdExp = document.getElementById('td-monster-exp');
+
+     // Helper: clear table cells
+     function clearTable() {
+       tdId.innerText = '';
+       tdName.innerText = '';
+       tdHp.innerText = '';
+       tdExp.innerText = '';
+     }
+
+     // Populate select: first option is "-" default
+     function populateSelect() {
+       const defaultOpt = document.createElement('option');
+       defaultOpt.value = '-';
+       defaultOpt.innerText = '-';
+       selectEl.appendChild(defaultOpt);
+
+       // 使用 forEach 建立 option，採 innerText（不要 innerHTML）
+       monsters.forEach(mon => {
+         const opt = document.createElement('option');
+         opt.value = mon.name; // 使用 name 作為 value（也可用 id）
+         opt.innerText = mon.name;
+         selectEl.appendChild(opt);
+       });
+     }
+
+     // On change callback
+     function onChangeHandler(e) {
+       const chosen = e.target.value;
+       if (chosen === '-') {
+         clearTable();
+         return;
+       }
+
+       // 找到選到的怪物，可用 for-of / find
+       const found = monsters.find(m => m.name === chosen);
+       if (!found) {
+         clearTable();
+         return;
+       }
+
+       // 更新 DOM（使用 innerText 或 textContent）
+       tdId.innerText = String(found.id);
+       tdName.innerText = found.name;
+       tdHp.innerText = String(found.hp);
+       tdExp.innerText = String(found.exp);
+     }
+
+     // 初始化
+     populateSelect();
+     // 預設為 '-'（first option）=> 清空欄位
+     clearTable();
+     selectEl.addEventListener('change', onChangeHandler);
+
+     // （可選）如果希望也支援按鈕觸發，下面範例可打開使用：
+     // const btn = document.createElement('button');
+     // btn.innerText = 'Show';
+     // btn.addEventListener('click', () => onChangeHandler({ target: selectEl }));
+     // document.querySelector('div').appendChild(btn);
+   </script>
+ </body>
+</html>
